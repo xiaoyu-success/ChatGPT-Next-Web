@@ -7,6 +7,8 @@ export const FETCH_COMMIT_URL = `https://api.github.com/repos/${OWNER}/${REPO}/c
 export const FETCH_TAG_URL = `https://api.github.com/repos/${OWNER}/${REPO}/tags?per_page=1`;
 export const RUNTIME_CONFIG_DOM = "danger-runtime-config";
 
+export const Web_title = "知林AI小助手"; // Web标题这里改
+
 export enum Path {
   Home = "/",
   Chat = "/chat",
