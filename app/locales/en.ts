@@ -1,11 +1,14 @@
 import { SubmitKey } from "../store/config";
 import { RequiredLocaleType } from "./index";
 
+const BotHello =
+  "#### Welcome to use Zhilin AI Assistant, please abide by the relevant laws and regulations when asking questions! !";
+
 const en: RequiredLocaleType = {
   WIP: "Coming Soon...",
   Error: {
     Unauthorized:
-      "Unauthorized access, please enter access code in settings page.",
+      "Unauthorized API key, please enter API key in [settings](/#/settings) page.",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} messages`,
@@ -96,14 +99,7 @@ const en: RequiredLocaleType = {
       Title: "Font Size",
       SubTitle: "Adjust font size of chat content",
     },
-    Update: {
-      Version: (x: string) => `Version: ${x}`,
-      IsLatest: "Latest version",
-      CheckUpdate: "Check Update",
-      IsChecking: "Checking update...",
-      FoundUpdate: (x: string) => `Found new version: ${x}`,
-      GoToUpdate: "Update",
-    },
+
     SendKey: "Send Key",
     Theme: "Theme",
     TightBorder: "Tight Border",
@@ -144,13 +140,13 @@ const en: RequiredLocaleType = {
     },
     Token: {
       Title: "API Key",
-      SubTitle: "Use your key to ignore access code limit",
-      Placeholder: "OpenAI API Key",
+      SubTitle: "Use your API key",
+      Placeholder: "API Key",
     },
     Usage: {
       Title: "Account Balance",
-      SubTitle(used: any, total: any) {
-        return `Used this month $${used}, subscription $${total}`;
+      SubTitle(total: any) {
+        return `Subscription ${total} p`;
       },
       IsChecking: "Checking...",
       Check: "Check",
@@ -178,7 +174,7 @@ const en: RequiredLocaleType = {
   },
   Store: {
     DefaultTopic: "New Conversation",
-    BotHello: "Hello! How can I assist you today?",
+    BotHello: BotHello,
     Error: "Something went wrong, please try again later.",
     Prompt: {
       History: (content: string) =>

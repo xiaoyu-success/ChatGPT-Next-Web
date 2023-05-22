@@ -1,10 +1,13 @@
 import { SubmitKey } from "../store/config";
 
+const BotHello =
+  "#### 欢迎使用知林AI小助手，请大家在提问时遵守相关法律法规哦！！"; // 欢迎词可以直接在这里修改啦！！！
+
 const cn = {
   WIP: "该功能仍在开发中……",
   Error: {
     Unauthorized:
-      "访问密码不正确或为空，请前往[设置](/#/settings)页输入正确的访问密码，或者填入你自己的 OpenAI API Key。",
+      "API key不正确或为空，请前往[设置](/#/settings)页输入正确的 API Key。",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} 条对话`,
@@ -86,7 +89,7 @@ const cn = {
       ConfirmClearAll: "确认清除所有数据？",
     },
     Lang: {
-      Name: "Language", // ATTENTION: if you wanna add a new translation, please do not translate this value, leave it as `Language`
+      Name: "Language", // ATTENTION: if you want to add a new translation, please do not translate this value, leave it as `Language`
       All: "所有语言",
     },
     Avatar: "头像",
@@ -95,14 +98,6 @@ const cn = {
       SubTitle: "聊天内容的字体大小",
     },
 
-    Update: {
-      Version: (x: string) => `当前版本：${x}`,
-      IsLatest: "已是最新版本",
-      CheckUpdate: "检查更新",
-      IsChecking: "正在检查更新...",
-      FoundUpdate: (x: string) => `发现新版本：${x}`,
-      GoToUpdate: "前往更新",
-    },
     SendKey: "发送键",
     Theme: "主题",
     TightBorder: "无边框模式",
@@ -142,14 +137,14 @@ const cn = {
     },
     Token: {
       Title: "API Key",
-      SubTitle: "使用自己的 Key 可绕过密码访问限制",
-      Placeholder: "OpenAI API Key",
+      SubTitle: "请输入自己的API key",
+      Placeholder: "API Key",
     },
 
     Usage: {
       Title: "余额查询",
-      SubTitle(used: any, total: any) {
-        return `本月已使用 $${used}，订阅总额 $${total}`;
+      SubTitle(total: any) {
+        return `订阅总额 ${total} p`;
       },
       IsChecking: "正在检查…",
       Check: "重新检查",
@@ -176,7 +171,7 @@ const cn = {
   },
   Store: {
     DefaultTopic: "新的聊天",
-    BotHello: "有什么可以帮你的吗",
+    BotHello: BotHello,
     Error: "出错了，稍后重试吧",
     Prompt: {
       History: (content: string) => "这是历史聊天总结作为前情提要：" + content,
