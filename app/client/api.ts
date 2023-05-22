@@ -33,7 +33,6 @@ export interface ChatOptions {
 }
 
 export interface LLMUsage {
-  used: number;
   total: number;
 }
 
