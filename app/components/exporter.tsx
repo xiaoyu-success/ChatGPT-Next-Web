@@ -10,17 +10,19 @@ import { REPO_URL } from "../constant";
 
 import CopyIcon from "../icons/copy.svg";
 import LoadingIcon from "../icons/three-dots.svg";
-import ChatGptIcon from "../icons/chatgpt.svg";
+import ChatGptIcon from "../icons/chatgpt.png";
 import ShareIcon from "../icons/share.svg";
+import BotIcon from "../icons/bot.png";
 
 import DownloadIcon from "../icons/download.svg";
 import { useMemo, useRef, useState } from "react";
 import { MessageSelector, useMessageSelector } from "./message-selector";
 import { Avatar } from "./emoji";
-import { MaskAvatar } from "./mask";
 import dynamic from "next/dynamic";
+import NextImage from "next/image";
 
 import { toBlob, toPng } from "html-to-image";
+import { DEFAULT_MASK_AVATAR } from "../store/mask";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
@@ -256,6 +258,22 @@ export function PreviewActions(props: {
   );
 }
 
+function ExportAvatar(props: { avatar: string }) {
+  if (props.avatar === DEFAULT_MASK_AVATAR) {
+    return (
+      <NextImage
+        src={BotIcon.src}
+        width={30}
+        height={30}
+        alt="bot"
+        className="user-avatar"
+      />
+    );
+  }
+
+  return <Avatar avatar={props.avatar}></Avatar>;
+}
+
 export function ImagePreviewer(props: {
   messages: ChatMessage[];
   topic: string;
@@ -322,16 +340,21 @@ export function ImagePreviewer(props: {
       >
         <div className={styles["chat-info"]}>
           <div className={styles["logo"] + " no-dark"}>
-            <ChatGptIcon />
+            <NextImage
+              src={ChatGptIcon.src}
+              alt="logo"
+              width={50}
+              height={50}
+            />
           </div>
 
           <div>
             <div className={styles["main-title"]}>{Web_title}</div>
             <div className={styles["sub-title"]}>{REPO_URL}</div>
             <div className={styles["icons"]}>
-              <Avatar avatar={config.avatar}></Avatar>
+              <ExportAvatar avatar={config.avatar} />
               <span className={styles["icon-space"]}>&</span>
-              <MaskAvatar mask={session.mask} />
+              <ExportAvatar avatar={mask.avatar} />
             </div>
           </div>
           <div>
@@ -359,14 +382,12 @@ export function ImagePreviewer(props: {
               key={i}
             >
               <div className={styles["avatar"]}>
-                {m.role === "user" ? (
-                  <Avatar avatar={config.avatar}></Avatar>
-                ) : (
-                  <MaskAvatar mask={session.mask} />
-                )}
+                <ExportAvatar
+                  avatar={m.role === "user" ? config.avatar : mask.avatar}
+                />
               </div>
 
-              <div className={`${styles["body"]} `}>
+              <div className={styles["body"]}>
                 <Markdown
                   content={m.content}
                   fontSize={config.fontSize}
