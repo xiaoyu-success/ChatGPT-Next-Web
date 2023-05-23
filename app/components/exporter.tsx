@@ -1,7 +1,7 @@
 import { ChatMessage, useAppConfig, useChatStore } from "../store";
 import Locale from "../locales";
 import styles from "./exporter.module.scss";
-import { List, ListItem, Modal, showToast } from "./ui-lib";
+import { List, ListItem, Modal, Select, showToast } from "./ui-lib";
 import { IconButton } from "./button";
 import { copyToClipboard, downloadAs, useMobileScreen } from "../utils";
 
@@ -164,7 +164,7 @@ export function MessageExporter() {
                 title={Locale.Export.Format.Title}
                 subTitle={Locale.Export.Format.SubTitle}
               >
-                <select
+                <Select
                   value={exportConfig.format}
                   onChange={(e) =>
                     updateExportConfig(
@@ -178,7 +178,7 @@ export function MessageExporter() {
                       {f}
                     </option>
                   ))}
-                </select>
+                </Select>
               </ListItem>
               <ListItem
                 title={Locale.Export.IncludeContext.Title}
