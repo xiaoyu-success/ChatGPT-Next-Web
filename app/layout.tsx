@@ -3,11 +3,12 @@ import "./styles/globals.scss";
 import "./styles/markdown.scss";
 import "./styles/highlight.scss";
 import { getBuildConfig } from "./config/build";
+import { WEB_TITLE } from "@/app/constant";
 
 const buildConfig = getBuildConfig();
 
 export const metadata = {
-  title: "知林AI小助手",
+  title: WEB_TITLE,
   description: "Your personal ChatGPT Chat Bot.",
   viewport: {
     width: "device-width",
@@ -19,7 +20,7 @@ export const metadata = {
     { media: "(prefers-color-scheme: dark)", color: "#151515" },
   ],
   appleWebApp: {
-    title: "知林AI小助手",
+    title: WEB_TITLE,
     statusBarStyle: "default",
   },
 };

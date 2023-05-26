@@ -143,10 +143,15 @@ const en: RequiredLocaleType = {
       SubTitle: "Use your API key",
       Placeholder: "API Key",
     },
-    Usage: {
-      Title: "Account Balance",
-      SubTitle(total: any) {
+    Usage_fk: {
+      SubTitle(used: any, total: any) {
         return `Subscription ${total} p`;
+      },
+    },
+    Usage_sk: {
+      Title: "Account Balance",
+      SubTitle(used: any, total: any) {
+        return `Used this month $${used}, subscription $${total}`;
       },
       IsChecking: "Checking...",
       Check: "Check",

@@ -1,9 +1,30 @@
 import { NextRequest } from "next/server";
+import { ACCESS_CODE_PREFIX } from "@/app/constant";
 
-export const OPENAI_URL = "oa.api2d.net";
-const DEFAULT_PROTOCOL = "https";
-const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
-const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
+export function parseApiKey(bearToken: string) {
+  const token = bearToken.trim().replaceAll("Bearer ", "").trim();
+  const isOpenAiKey = !token.startsWith(ACCESS_CODE_PREFIX);
+
+  return {
+    apiKey: isOpenAiKey ? token : "",
+  };
+}
+
+export function OPENAI_URL_JUDGE(authValue: string) {
+  // API切换
+  const { apiKey: token } = parseApiKey(authValue);
+  let validString = (x: string) => x && x.length > 0;
+  if (validString(token)) {
+    if (token.startsWith("sk-")) {
+      return 1;
+    } else if (token.startsWith("fk")) {
+      return 2;
+    }
+  }
+}
+
+export let apiKeyStatue: number;
+export let OPENAI_URL: string;
 
 export async function requestOpenai(req: NextRequest) {
   const controller = new AbortController();
@@ -13,10 +34,24 @@ export async function requestOpenai(req: NextRequest) {
     "",
   );
 
-  let baseUrl = BASE_URL;
+  let apiKeySatatue = OPENAI_URL_JUDGE(authValue);
 
-  if (!baseUrl.startsWith("http")) {
-    baseUrl = `${PROTOCOL}://${baseUrl}`;
+  const OPENAI_URL = (function () {
+    if (apiKeySatatue == 1) {
+      return "api.openai.com";
+    } else if (apiKeySatatue == 2) {
+      return "oa.api2d.net";
+    } else {
+      console.log("BASE_URL is error!");
+    }
+  })();
+  const DEFAULT_PROTOCOL = "https";
+  const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
+  let baseUrl = process.env.BASE_URL ?? OPENAI_URL;
+  if (baseUrl) {
+    if (!baseUrl.startsWith("http")) {
+      baseUrl = `${PROTOCOL}://${baseUrl}`;
+    }
   }
 
   console.log("[Proxy] ", openaiPath);

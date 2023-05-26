@@ -33,12 +33,13 @@ export interface ChatOptions {
 }
 
 export interface LLMUsage {
+  used: number;
   total: number;
 }
 
 export abstract class LLMApi {
   abstract chat(options: ChatOptions): Promise<void>;
-  abstract usage(): Promise<LLMUsage>;
+  abstract usage(): Promise<LLMUsage | undefined>;
 }
 
 export class ClientApi {
@@ -115,4 +116,9 @@ export function getHeaders() {
   }
 
   return headers;
+}
+
+export function getToken() {
+  // 获取当前APIkey => openai.ts => usage()
+  return { token: useAccessStore.getState().token };
 }

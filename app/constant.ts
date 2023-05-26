@@ -1,14 +1,19 @@
-export const OWNER = "xiaoyu-success";
-export const REPO = "ChatGPT-Next-Web";
+// 页面信息
+export const WEB_TITLE = "知林AI小助手"; // 页面标题
+export const SUBTITLE = "Build your own AI assistant!"; // 页面副标题
+
+// 个人GitHub仓库信息
+export const OWNER = "xiaoyu-success"; // GitHub用户名
+export const REPO = "ChatGPT-Next-Web"; // GitHub仓库名称
 export const REPO_URL = `https://github.com/${OWNER}/${REPO}`;
 export const ISSUE_URL = `https://github.com/${OWNER}/${REPO}/issues`;
-export const UPDATE_URL = `${REPO_URL}#keep-updated`;
-export const FETCH_COMMIT_URL = `https://api.github.com/repos/${OWNER}/${REPO}/commits?per_page=1`;
-export const FETCH_TAG_URL = `https://api.github.com/repos/${OWNER}/${REPO}/tags?per_page=1`;
 export const RUNTIME_CONFIG_DOM = "danger-runtime-config";
 
-export const Web_title = "知林AI小助手"; // Web标题这里改
+// 导出图片/文件信息
+export const EXPOETER_TITLE = WEB_TITLE; // 导出图片的标题，可修改string类型
+export const EXPOETER_SUBTITLE = REPO_URL; // 导出图片的副标题，可修改string类型
 
+//以下请勿修改！！！
 export enum Path {
   Home = "/",
   Chat = "/chat",

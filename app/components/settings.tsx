@@ -38,12 +38,14 @@ import Locale, {
 } from "../locales";
 import { copyToClipboard } from "../utils";
 import Link from "next/link";
-import { Path, UPDATE_URL } from "../constant";
+import { Path } from "../constant";
 import { Prompt, SearchService, usePromptStore } from "../store/prompt";
 import { ErrorBoundary } from "./error";
 import { InputRange } from "./input-range";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarPicker } from "./emoji";
+import { getToken } from "@/app/client/api";
+import { parseApiKey, OPENAI_URL_JUDGE } from "@/app/api/common";
 
 function EditPromptModal(props: { id: number; onClose: () => void }) {
   const promptStore = usePromptStore();
@@ -243,6 +245,25 @@ export function Settings() {
     used: updateStore.used,
     subscription: updateStore.subscription,
   };
+
+  const apiKeySatatue = OPENAI_URL_JUDGE(parseApiKey(getToken().token).apiKey);
+  const Usage_Title = Locale.Settings.Usage_sk.Title;
+  const Usage_IsChecking = Locale.Settings.Usage_sk.IsChecking;
+  const Usage_Check = Locale.Settings.Usage_sk.Check;
+  const Usage_NoAcces = Locale.Settings.Usage_sk.NoAccess;
+  let SubTitle;
+  if (apiKeySatatue == 1) {
+    SubTitle = Locale.Settings.Usage_sk.SubTitle(
+      usage?.used ?? "[?]",
+      usage?.subscription ?? "[?]",
+    );
+  } else if (apiKeySatatue == 2) {
+    SubTitle = Locale.Settings.Usage_fk.SubTitle(
+      usage?.used ?? "[?]",
+      usage?.subscription ?? "[?]",
+    );
+  }
+
   const [loadingUsage, setLoadingUsage] = useState(false);
   function checkUsage(force = false) {
     setLoadingUsage(true);
@@ -487,19 +508,20 @@ export function Settings() {
                 placeholder={Locale.Settings.Token.Placeholder}
                 onChange={(e) => {
                   accessStore.updateToken(e.currentTarget.value);
+                  checkUsage(true);
                 }}
               />
             </ListItem>
           ) : null}
 
           <ListItem
-            title={Locale.Settings.Usage.Title}
+            title={Usage_Title}
             subTitle={
               showUsage
                 ? loadingUsage
-                  ? Locale.Settings.Usage.IsChecking
-                  : Locale.Settings.Usage.SubTitle(usage?.subscription ?? "[?]")
-                : Locale.Settings.Usage.NoAccess
+                  ? Usage_IsChecking
+                  : SubTitle
+                : Usage_NoAcces
             }
           >
             {!showUsage || loadingUsage ? (
@@ -507,7 +529,7 @@ export function Settings() {
             ) : (
               <IconButton
                 icon={<ResetIcon></ResetIcon>}
-                text={Locale.Settings.Usage.Check}
+                text={Usage_Check}
                 onClick={() => checkUsage(true)}
               />
             )}

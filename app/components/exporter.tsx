@@ -5,8 +5,7 @@ import { List, ListItem, Modal, Select, showToast } from "./ui-lib";
 import { IconButton } from "./button";
 import { copyToClipboard, downloadAs, useMobileScreen } from "../utils";
 
-import { Web_title } from "../constant";
-import { REPO_URL } from "../constant";
+import { EXPOETER_TITLE, EXPOETER_SUBTITLE } from "../constant";
 
 import CopyIcon from "../icons/copy.svg";
 import LoadingIcon from "../icons/three-dots.svg";
@@ -440,8 +439,8 @@ export function ImagePreviewer(props: {
           </div>
 
           <div>
-            <div className={styles["main-title"]}>{Web_title}</div>
-            <div className={styles["sub-title"]}>{REPO_URL}</div>
+            <div className={styles["main-title"]}>{EXPOETER_TITLE}</div>
+            <div className={styles["sub-title"]}>{EXPOETER_SUBTITLE}</div>
             <div className={styles["icons"]}>
               <ExportAvatar avatar={config.avatar} />
               <span className={styles["icon-space"]}>&</span>
