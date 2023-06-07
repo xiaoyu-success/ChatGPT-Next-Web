@@ -229,7 +229,7 @@ export class ChatGPTApi implements LLMApi {
       }
 
       if (!used.ok || !subs.ok) {
-        throw new Error("Failed to query usage from openai");
+        throw new Error("无法从OpenaAI获取你的订阅信息！");
       }
 
       const response = (await used.json()) as {

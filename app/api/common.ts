@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { ACCESS_CODE_PREFIX } from "@/app/constant";
 
 export function parseApiKey(bearToken: string) {
@@ -9,7 +9,6 @@ export function parseApiKey(bearToken: string) {
     apiKey: isOpenAiKey ? token : "",
   };
 }
-
 export function OPENAI_URL_JUDGE(authValue: string) {
   // API切换
   const { apiKey: token } = parseApiKey(authValue);
@@ -25,6 +24,7 @@ export function OPENAI_URL_JUDGE(authValue: string) {
 
 export let apiKeyStatue: number;
 export let OPENAI_URL: string;
+const DISABLE_GPT4 = !!process.env.DISABLE_GPT4;
 
 export async function requestOpenai(req: NextRequest) {
   const controller = new AbortController();
@@ -79,6 +79,30 @@ export async function requestOpenai(req: NextRequest) {
     body: req.body,
     signal: controller.signal,
   };
+
+  // #1815 try to refuse gpt4 request
+  if (DISABLE_GPT4 && req.body) {
+    try {
+      const clonedBody = await req.text();
+      fetchOptions.body = clonedBody;
+
+      const jsonBody = JSON.parse(clonedBody);
+
+      if ((jsonBody?.model ?? "").includes("gpt-4")) {
+        return NextResponse.json(
+          {
+            error: true,
+            message: "you are not allowed to use gpt-4 model",
+          },
+          {
+            status: 403,
+          },
+        );
+      }
+    } catch (e) {
+      console.error("[OpenAI] gpt4 filter", e);
+    }
+  }
 
   try {
     const res = await fetch(fetchUrl, fetchOptions);
