@@ -1,4 +1,4 @@
-import { REQUEST_TIMEOUT_MS } from "@/app/constant";
+import { OpenaiPath, REQUEST_TIMEOUT_MS } from "@/app/constant";
 import { useAccessStore, useAppConfig, useChatStore } from "@/app/store";
 
 import { ChatOptions, getHeaders, LLMApi, LLMUsage, getToken } from "../api";
@@ -12,11 +12,6 @@ import { prettyObject } from "@/app/utils/format";
 import { parseApiKey, OPENAI_URL_JUDGE } from "@/app/api/common";
 
 export class ChatGPTApi implements LLMApi {
-  public ChatPath = "v1/chat/completions";
-  public skUsagePath = "dashboard/billing/usage"; // sk-
-  public skSubsPath = "dashboard/billing/subscription"; // sk-
-  public fkSubsPath = "dashboard/billing/credit_grants"; // fk
-
   path(path: string): string {
     let openaiUrl = useAccessStore.getState().openaiUrl;
     if (openaiUrl.endsWith("/")) {
@@ -58,7 +53,7 @@ export class ChatGPTApi implements LLMApi {
     options.onController?.(controller);
 
     try {
-      const chatPath = this.path(this.ChatPath);
+      const chatPath = this.path(OpenaiPath.ChatPath);
       const chatPayload = {
         method: "POST",
         body: JSON.stringify(requestPayload),
@@ -165,7 +160,6 @@ export class ChatGPTApi implements LLMApi {
       options.onError?.(e as Error);
     }
   }
-
   async usage() {
     const apiKeySatatue = OPENAI_URL_JUDGE(
       parseApiKey(getToken().token).apiKey,
@@ -173,7 +167,7 @@ export class ChatGPTApi implements LLMApi {
 
     if (apiKeySatatue == 2) {
       const [subs] = await Promise.all([
-        fetch(this.path(this.fkSubsPath), {
+        fetch(this.path(OpenaiPath.fkSubsPath), {
           method: "GET",
           headers: getHeaders(),
         }),
@@ -211,14 +205,14 @@ export class ChatGPTApi implements LLMApi {
       const [used, subs] = await Promise.all([
         fetch(
           this.path(
-            `${this.skUsagePath}?start_date=${startDate}&end_date=${endDate}`,
+            `${OpenaiPath.skUsagePath}?start_date=${startDate}&end_date=${endDate}`,
           ),
           {
             method: "GET",
             headers: getHeaders(),
           },
         ),
-        fetch(this.path(this.skSubsPath), {
+        fetch(this.path(OpenaiPath.skSubsPath), {
           method: "GET",
           headers: getHeaders(),
         }),
@@ -263,3 +257,4 @@ export class ChatGPTApi implements LLMApi {
     }
   }
 }
+export { OpenaiPath };

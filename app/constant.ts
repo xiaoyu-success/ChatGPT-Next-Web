@@ -11,6 +11,7 @@ export const UPDATE_URL = `${REPO_URL}#keep-updated`;
 export const FETCH_COMMIT_URL = `https://api.github.com/repos/${OWNER}/${REPO}/commits?per_page=1`;
 export const FETCH_TAG_URL = `https://api.github.com/repos/${OWNER}/${REPO}/tags?per_page=1`;
 export const RUNTIME_CONFIG_DOM = "danger-runtime-config";
+export const DEFAULT_API_HOST = "https://chatgpt.nextweb.fun/api/proxy";
 
 // 导出图片/文件信息
 export const EXPOETER_TITLE = WEB_TITLE; // 导出图片的标题，可修改string类型
@@ -55,3 +56,10 @@ export const LAST_INPUT_KEY = "last-input";
 export const REQUEST_TIMEOUT_MS = 60000;
 
 export const EXPORT_MESSAGE_CLASS_NAME = "export-markdown";
+
+export const OpenaiPath = {
+  ChatPath: "v1/chat/completions",
+  skUsagePath: "dashboard/billing/usage", // sk-
+  skSubsPath: "dashboard/billing/subscription", // sk-
+  fkSubsPath: "dashboard/billing/credit_grants", // fk
+};
